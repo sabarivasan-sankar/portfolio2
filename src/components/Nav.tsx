@@ -5,7 +5,6 @@ import { Magnetic } from "./Magnetic";
 
 const LINKS = [
   { href: "#about", label: "about" },
-  { href: "#experience", label: "experience" },
   { href: "#skills", label: "skills" },
   { href: "#work", label: "work" },
   { href: "#contact", label: "contact" },

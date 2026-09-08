@@ -158,30 +158,58 @@ body {
   }
 }
 
-/* infinite horizontal marquee, driven purely by CSS so it never touches
-   React state or the main thread once started */
-@keyframes marquee-scroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-
-.marquee-track {
-  display: flex;
-  width: max-content;
-  animation: marquee-scroll 32s linear infinite;
-}
-
-.marquee-track[data-dir="reverse"] {
-  animation-direction: reverse;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .marquee-track {
-    animation: none;
-  }
-}
-
 .tilt-card {
   transform-style: preserve-3d;
   will-change: transform;
+}
+
+/* the bento dashboard: named grid areas so cells can be arbitrarily sized
+   and reordered without juggling col/row-span numbers */
+.deck-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-areas:
+    "about about about about about about about now now now now now"
+    "about about about about about about about hist hist hist hist hist"
+    "stack stack stack stack stack stack stack stack stack stack stack stack"
+    "work work work work work work work work work work work work"
+    "cred cred cred cred cred cred status status status status status status";
+}
+
+.deck-grid .area-about { grid-area: about; }
+.deck-grid .area-now { grid-area: now; }
+.deck-grid .area-hist { grid-area: hist; }
+.deck-grid .area-stack { grid-area: stack; }
+.deck-grid .area-work { grid-area: work; }
+.deck-grid .area-cred { grid-area: cred; }
+.deck-grid .area-status { grid-area: status; }
+
+@media (max-width: 900px) {
+  .deck-grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "about"
+      "now"
+      "hist"
+      "stack"
+      "work"
+      "cred"
+      "status";
+  }
+}
+
+@keyframes status-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.75); }
+}
+
+.status-dot {
+  animation: status-pulse 2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .status-dot {
+    animation: none;
+  }
 }

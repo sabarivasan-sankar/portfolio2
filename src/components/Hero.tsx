@@ -1,5 +1,4 @@
 import { useLayoutEffect, useRef } from "react";
-import { CaretDown } from "@phosphor-icons/react";
 import { gsap } from "../lib/gsap";
 import { SplitText } from "gsap/SplitText";
 import { useReducedMotion } from "../hooks/useReducedMotion";
@@ -69,11 +68,11 @@ export function Hero({ ready }: Props) {
   return (
     <section
       id="top"
-      className="relative min-h-[100dvh] pt-24 pb-16 flex items-center overflow-hidden"
+      className="relative min-h-[64vh] md:min-h-[70vh] pt-28 pb-14 flex items-center overflow-hidden border-b border-border"
     >
       <div
         aria-hidden="true"
-        className="absolute right-[-10%] top-1/2 -translate-y-1/2 w-[70vw] max-w-[720px] aspect-square opacity-90"
+        className="absolute right-[-6%] top-1/2 -translate-y-1/2 w-[46vw] max-w-[420px] aspect-square opacity-90"
       >
         <HeroScene />
       </div>
@@ -83,7 +82,7 @@ export function Hero({ ready }: Props) {
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(90deg, var(--color-bg) 0%, color-mix(in srgb, var(--color-bg) 55%, transparent) 55%, transparent 85%)",
+            "linear-gradient(90deg, var(--color-bg) 0%, color-mix(in srgb, var(--color-bg) 60%, transparent) 48%, transparent 78%)",
         }}
       />
 
@@ -93,7 +92,7 @@ export function Hero({ ready }: Props) {
         </p>
 
         <h1
-          className="text-6xl sm:text-7xl lg:text-8xl font-semibold tracking-tight leading-[0.98] text-fg max-w-[14ch]"
+          className="text-5xl sm:text-6xl lg:text-7xl font-semibold tracking-tight leading-[0.98] text-fg max-w-[14ch]"
           style={{ perspective: "600px", opacity: 0 }}
         >
           {profile.name}
@@ -137,10 +136,6 @@ export function Hero({ ready }: Props) {
             </a>
           </Magnetic>
         </div>
-      </div>
-
-      <div className="absolute bottom-7 left-1/2 -translate-x-1/2 text-fg-faint">
-        <CaretDown size={18} className={reducedMotion ? "" : "animate-bounce"} />
       </div>
     </section>
   );
