@@ -39,16 +39,18 @@ export function Contact() {
                 rel={link.href.startsWith("http") ? "noreferrer" : undefined}
                 className="group flex items-center justify-between gap-4 py-4 hover:text-accent transition-colors"
               >
-                <span className="flex items-center gap-3">
-                  <Icon size={20} weight="regular" />
-                  <span className="font-mono text-sm text-fg-faint w-20">{link.label}</span>
-                  <span className="text-fg group-hover:text-accent transition-colors">
+                <span className="flex items-center gap-3 min-w-0">
+                  <Icon size={20} weight="regular" className="shrink-0" />
+                  <span className="font-mono text-sm text-fg-faint w-16 sm:w-20 shrink-0">
+                    {link.label}
+                  </span>
+                  <span className="text-fg group-hover:text-accent transition-colors truncate">
                     {link.value}
                   </span>
                 </span>
                 <ArrowUpRight
                   size={18}
-                  className="text-fg-faint group-hover:text-accent transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                  className="shrink-0 text-fg-faint group-hover:text-accent transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
                 />
               </a>
             </li>
