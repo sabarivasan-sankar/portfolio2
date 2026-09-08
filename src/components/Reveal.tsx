@@ -10,7 +10,7 @@ type RevealProps = {
   blur?: boolean;
 };
 
-export function Reveal({ children, className, y = 28, delay = 0, blur = false }: RevealProps) {
+export function Reveal({ children, className, y = 32, delay = 0, blur = true }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
 
@@ -19,9 +19,9 @@ export function Reveal({ children, className, y = 28, delay = 0, blur = false }:
     if (!el || reduced) return;
 
     const from: gsap.TweenVars = { opacity: 0, y };
-    const to: gsap.TweenVars = { opacity: 1, y: 0, duration: 0.9, delay, ease: "power3.out" };
+    const to: gsap.TweenVars = { opacity: 1, y: 0, duration: 1, delay, ease: "power3.out" };
     if (blur) {
-      from.filter = "blur(10px)";
+      from.filter = "blur(12px)";
       to.filter = "blur(0px)";
     }
 
@@ -30,7 +30,7 @@ export function Reveal({ children, className, y = 28, delay = 0, blur = false }:
         ...to,
         scrollTrigger: {
           trigger: el,
-          start: "top 82%",
+          start: "top 85%",
           toggleActions: "play none none reverse",
         },
       });

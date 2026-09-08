@@ -1,28 +1,31 @@
+import { useCallback, useEffect, useState } from "react";
 import { Nav } from "./components/Nav";
-import { StoryHud } from "./components/StoryHud";
-import { ScrollDriver } from "./components/ScrollDriver";
-import { SceneBackdrop } from "./components/scene/SceneBackdrop";
+import { Preloader } from "./components/Preloader";
 import { Hero } from "./components/Hero";
 import { About } from "./components/About";
-import { RoleChapters } from "./components/RoleChapters";
+import { Experience } from "./components/Experience";
 import { Skills } from "./components/Skills";
 import { Highlights } from "./components/Highlights";
 import { Credentials } from "./components/Credentials";
 import { Contact } from "./components/Contact";
 import { Footer } from "./components/Footer";
+import { pointerStore } from "./lib/pointerStore";
 
 function App() {
+  const [ready, setReady] = useState(false);
+  const handleReady = useCallback(() => setReady(true), []);
+
+  useEffect(() => pointerStore.attach(), []);
+
   return (
     <>
       <div className="scanline-overlay" aria-hidden="true" />
-      <SceneBackdrop />
-      <ScrollDriver />
+      <Preloader onComplete={handleReady} />
       <Nav />
-      <StoryHud />
-      <main className="relative">
-        <Hero />
+      <main>
+        <Hero ready={ready} />
         <About />
-        <RoleChapters />
+        <Experience />
         <Skills />
         <Highlights />
         <Credentials />

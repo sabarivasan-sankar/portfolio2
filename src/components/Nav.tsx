@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { List, X, Sun, Moon } from "@phosphor-icons/react";
 import { useTheme } from "../hooks/useTheme";
+import { Magnetic } from "./Magnetic";
 
 const LINKS = [
   { href: "#about", label: "about" },
-  { href: "#role-intern", label: "experience" },
+  { href: "#experience", label: "experience" },
   { href: "#skills", label: "skills" },
   { href: "#work", label: "work" },
   { href: "#contact", label: "contact" },
@@ -28,29 +29,36 @@ export function Nav() {
           href="#top"
           className="font-mono text-sm text-fg hover:text-accent transition-colors"
         >
-          sabarivasan<span className="text-accent">@</span>dev
+          sabarivasan<span className="text-accent">.</span>dev
           <span className="caret-blink text-accent">_</span>
         </a>
 
         <ul className="hidden md:flex items-center gap-8 font-mono text-[13px] tracking-wide uppercase">
           {LINKS.map((link) => (
             <li key={link.href}>
-              <a href={link.href} className="bracket-link text-fg-muted hover:text-fg transition-colors">
-                {link.label}
-              </a>
+              <Magnetic strength={0.4}>
+                <a
+                  href={link.href}
+                  className="bracket-link text-fg-muted hover:text-fg transition-colors"
+                >
+                  {link.label}
+                </a>
+              </Magnetic>
             </li>
           ))}
         </ul>
 
         <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={toggle}
-            aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-            className="hidden md:inline-flex items-center justify-center w-9 h-9 rounded-sm border border-border text-fg-muted hover:text-accent hover:border-accent-dim transition-colors"
-          >
-            {theme === "dark" ? <Sun size={16} weight="bold" /> : <Moon size={16} weight="bold" />}
-          </button>
+          <Magnetic strength={0.5} className="hidden md:inline-block">
+            <button
+              type="button"
+              onClick={toggle}
+              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+              className="inline-flex items-center justify-center w-9 h-9 rounded-sm border border-border text-fg-muted hover:text-accent hover:border-accent-dim transition-colors"
+            >
+              {theme === "dark" ? <Sun size={16} weight="bold" /> : <Moon size={16} weight="bold" />}
+            </button>
+          </Magnetic>
 
           <button
             type="button"

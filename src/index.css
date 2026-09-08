@@ -1,42 +1,42 @@
 @import "tailwindcss";
-@import "@fontsource/space-grotesk/400.css";
-@import "@fontsource/space-grotesk/500.css";
-@import "@fontsource/space-grotesk/700.css";
-@import "@fontsource/jetbrains-mono/400.css";
-@import "@fontsource/jetbrains-mono/500.css";
-@import "@fontsource/jetbrains-mono/700.css";
+@import "@fontsource/sora/400.css";
+@import "@fontsource/sora/500.css";
+@import "@fontsource/sora/600.css";
+@import "@fontsource/sora/700.css";
+@import "@fontsource/space-mono/400.css";
+@import "@fontsource/space-mono/700.css";
 
 @theme {
-  --font-sans: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-sans: "Sora", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, SFMono-Regular, monospace;
 
-  --color-bg: #0a0b0d;
-  --color-bg-raised: #121417;
-  --color-bg-inset: #0e1013;
-  --color-fg: #ecebe6;
-  --color-fg-muted: #93989e;
-  --color-fg-faint: #5b6066;
-  --color-border: #23262b;
-  --color-border-strong: #34383e;
-  --color-accent: #f2a93b;
-  --color-accent-dim: #8a6321;
-  --color-accent-fg: #100b02;
+  --color-bg: #0a0b10;
+  --color-bg-raised: #14161f;
+  --color-bg-inset: #0e0f16;
+  --color-fg: #f2f3f7;
+  --color-fg-muted: #9a9db3;
+  --color-fg-faint: #5b5e70;
+  --color-border: #23252f;
+  --color-border-strong: #34374a;
+  --color-accent: #5b77ff;
+  --color-accent-dim: #263070;
+  --color-accent-fg: #05060c;
 
   --breakpoint-xs: 420px;
 }
 
 :root[data-theme="light"] {
-  --color-bg: #f6f4ef;
+  --color-bg: #f4f5fa;
   --color-bg-raised: #ffffff;
-  --color-bg-inset: #ece9e1;
-  --color-fg: #16181b;
-  --color-fg-muted: #55595f;
-  --color-fg-faint: #82868c;
-  --color-border: #ddd8cc;
-  --color-border-strong: #c7c1b2;
-  --color-accent: #9c5c0a;
-  --color-accent-dim: #e2b673;
-  --color-accent-fg: #fbf3e6;
+  --color-bg-inset: #e9ebf3;
+  --color-fg: #0c0d14;
+  --color-fg-muted: #494c5c;
+  --color-fg-faint: #7a7d8f;
+  --color-border: #d8dae5;
+  --color-border-strong: #c0c3d4;
+  --color-accent: #2b3fd6;
+  --color-accent-dim: #b9c3f5;
+  --color-accent-fg: #ffffff;
 }
 
 * {
@@ -72,7 +72,7 @@ body {
   outline-offset: 2px;
 }
 
-/* fixed, pointer-events-none scanline texture; never applied to a scrolling container */
+/* fixed, pointer-events-none grain texture; never applied to a scrolling container */
 .scanline-overlay {
   position: fixed;
   inset: 0;
@@ -91,13 +91,6 @@ body {
 
 :root[data-theme="light"] .scanline-overlay {
   opacity: 0.02;
-}
-
-.grid-texture {
-  background-image:
-    linear-gradient(to right, var(--color-border) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--color-border) 1px, transparent 1px);
-  background-size: 56px 56px;
 }
 
 @keyframes caret-blink {
@@ -147,15 +140,13 @@ body {
 }
 
 .bracket-link:hover::before,
-.bracket-link:focus-visible::before,
-.bracket-link[aria-current="true"]::before {
+.bracket-link:focus-visible::before {
   opacity: 1;
   transform: translate(0, -50%);
 }
 
 .bracket-link:hover::after,
-.bracket-link:focus-visible::after,
-.bracket-link[aria-current="true"]::after {
+.bracket-link:focus-visible::after {
   opacity: 1;
   transform: translate(0, -50%);
 }
@@ -165,4 +156,32 @@ body {
   .bracket-link::after {
     transition: none;
   }
+}
+
+/* infinite horizontal marquee, driven purely by CSS so it never touches
+   React state or the main thread once started */
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 32s linear infinite;
+}
+
+.marquee-track[data-dir="reverse"] {
+  animation-direction: reverse;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}
+
+.tilt-card {
+  transform-style: preserve-3d;
+  will-change: transform;
 }
