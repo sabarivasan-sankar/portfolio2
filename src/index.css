@@ -1,41 +1,29 @@
 @import "tailwindcss";
+@import "@fontsource/sora/200.css";
+@import "@fontsource/sora/300.css";
 @import "@fontsource/sora/400.css";
-@import "@fontsource/sora/500.css";
-@import "@fontsource/sora/600.css";
-@import "@fontsource/sora/700.css";
 @import "@fontsource/space-mono/400.css";
-@import "@fontsource/space-mono/700.css";
 
 @theme {
   --font-sans: "Sora", "Segoe UI", system-ui, sans-serif;
   --font-mono: "Space Mono", ui-monospace, SFMono-Regular, monospace;
 
   --color-bg: #0a0b10;
-  --color-bg-raised: #14161f;
-  --color-bg-inset: #0e0f16;
   --color-fg: #f2f3f7;
-  --color-fg-muted: #9a9db3;
-  --color-fg-faint: #5b5e70;
-  --color-border: #23252f;
-  --color-border-strong: #34374a;
-  --color-accent: #5b77ff;
-  --color-accent-dim: #263070;
+  --color-fg-muted: #a2a5b8;
+  --color-fg-faint: #5f6274;
+  --color-line: #232532;
+  --color-accent: #6b83ff;
   --color-accent-fg: #05060c;
-
-  --breakpoint-xs: 420px;
 }
 
 :root[data-theme="light"] {
-  --color-bg: #f4f5fa;
-  --color-bg-raised: #ffffff;
-  --color-bg-inset: #e9ebf3;
+  --color-bg: #f5f5f7;
   --color-fg: #0c0d14;
-  --color-fg-muted: #494c5c;
-  --color-fg-faint: #7a7d8f;
-  --color-border: #d8dae5;
-  --color-border-strong: #c0c3d4;
+  --color-fg-muted: #4a4d5e;
+  --color-fg-faint: #85889a;
+  --color-line: #dcdde5;
   --color-accent: #2b3fd6;
-  --color-accent-dim: #b9c3f5;
   --color-accent-fg: #ffffff;
 }
 
@@ -58,6 +46,7 @@ body {
   background: var(--color-bg);
   color: var(--color-fg);
   font-family: var(--font-sans);
+  font-weight: 300;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -69,147 +58,107 @@ body {
 
 :focus-visible {
   outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
+  outline-offset: 3px;
 }
 
-/* fixed, pointer-events-none grain texture; never applied to a scrolling container */
-.scanline-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  pointer-events: none;
-  opacity: 0.035;
-  background-image: repeating-linear-gradient(
-    0deg,
-    #fff 0px,
-    #fff 1px,
-    transparent 1px,
-    transparent 3px
-  );
-  mix-blend-mode: overlay;
+/* Display type: large but LIGHT. Measured from award-winning references,
+   which run 48-80px at weight 300-400 with tight negative tracking, never bold. */
+.display {
+  font-size: clamp(2.6rem, 6.4vw, 4.6rem);
+  font-weight: 200;
+  line-height: 1.02;
+  letter-spacing: -0.028em;
 }
 
-:root[data-theme="light"] .scanline-overlay {
-  opacity: 0.02;
+/* Body copy is deliberately large. References sit at 22-24px, not 14-16px. */
+.lede {
+  font-size: clamp(1.15rem, 1.9vw, 1.5rem);
+  line-height: 1.5;
+  font-weight: 300;
+  color: var(--color-fg-muted);
 }
 
-@keyframes caret-blink {
-  0%, 45% { opacity: 1; }
-  50%, 95% { opacity: 0; }
-  100% { opacity: 1; }
+.body-lg {
+  font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+  line-height: 1.6;
+  font-weight: 300;
+  color: var(--color-fg-muted);
 }
 
-.caret-blink {
-  animation: caret-blink 1.1s steps(1) infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .caret-blink {
-    animation: none;
-    opacity: 1;
-  }
-}
-
-.bracket-link {
-  position: relative;
-  padding: 0.15rem 0.15rem;
-}
-
-.bracket-link::before,
-.bracket-link::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  transform: translate(0, -50%);
-  color: var(--color-accent);
+.micro {
   font-family: var(--font-mono);
-  opacity: 0;
-  transition: opacity 180ms ease, transform 180ms ease;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-fg-faint);
 }
 
-.bracket-link::before {
-  content: "[";
-  left: -0.7em;
-  transform: translate(0.3em, -50%);
+/* Solid redaction blocks. These are content, not chrome, so they may be heavy. */
+.redaction-bar {
+  display: block;
+  height: 1.35rem;
+  background: var(--color-fg-faint);
+  opacity: 0.22;
 }
 
-.bracket-link::after {
-  content: "]";
-  right: -0.7em;
-  transform: translate(-0.3em, -50%);
-}
-
-.bracket-link:hover::before,
-.bracket-link:focus-visible::before {
-  opacity: 1;
-  transform: translate(0, -50%);
-}
-
-.bracket-link:hover::after,
-.bracket-link:focus-visible::after {
-  opacity: 1;
-  transform: translate(0, -50%);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .bracket-link::before,
-  .bracket-link::after {
-    transition: none;
-  }
-}
-
-.tilt-card {
-  transform-style: preserve-3d;
-  will-change: transform;
-}
-
-/* the bento dashboard: named grid areas so cells can be arbitrarily sized
-   and reordered without juggling col/row-span numbers */
-.deck-grid {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  grid-template-areas:
-    "about about about about about about about now now now now now"
-    "about about about about about about about hist hist hist hist hist"
-    "stack stack stack stack stack stack stack stack stack stack stack stack"
-    "work work work work work work work work work work work work"
-    "cred cred cred cred cred cred status status status status status status";
-}
-
-.deck-grid .area-about { grid-area: about; }
-.deck-grid .area-now { grid-area: now; }
-.deck-grid .area-hist { grid-area: hist; }
-.deck-grid .area-stack { grid-area: stack; }
-.deck-grid .area-work { grid-area: work; }
-.deck-grid .area-cred { grid-area: cred; }
-.deck-grid .area-status { grid-area: status; }
-
-@media (max-width: 900px) {
-  .deck-grid {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas:
-      "about"
-      "now"
-      "hist"
-      "stack"
-      "work"
-      "cred"
-      "status";
-  }
+.rule {
+  height: 1px;
+  background: var(--color-line);
+  border: 0;
 }
 
 @keyframes status-pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.75); }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
 }
 
 .status-dot {
-  animation: status-pulse 2s ease-in-out infinite;
+  animation: status-pulse 2.4s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .status-dot {
     animation: none;
+  }
+}
+
+/* Understated text controls; an underline that grows, no button chrome. */
+.role-tab {
+  position: relative;
+  padding-bottom: 0.35rem;
+  color: var(--color-fg-faint);
+  transition: color 220ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.role-tab::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 320ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.role-tab:hover {
+  color: var(--color-fg-muted);
+}
+
+.role-tab[aria-checked="true"] {
+  color: var(--color-accent);
+}
+
+.role-tab[aria-checked="true"]::after,
+.role-tab:hover::after {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .role-tab,
+  .role-tab::after {
+    transition: none;
   }
 }

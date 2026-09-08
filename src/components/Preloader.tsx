@@ -2,53 +2,48 @@ import { useEffect, useRef } from "react";
 import { gsap } from "../lib/gsap";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
-type Props = { onComplete: () => void };
+const STEPS = ["opening session", "loading policy", "evaluating grants", "ready"];
 
-export function Preloader({ onComplete }: Props) {
+export function Preloader() {
   const overlayRef = useRef<HTMLDivElement>(null);
-  const counterRef = useRef<HTMLSpanElement>(null);
+  const stepRef = useRef<HTMLParagraphElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotion();
 
   useEffect(() => {
+    if (reducedMotion) return;
+
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
-    if (reducedMotion) {
-      document.body.style.overflow = previousOverflow;
-      onComplete();
-      return;
-    }
-
-    const counter = { value: 0 };
+    const state = { value: 0 };
     const tl = gsap.timeline({
       onComplete: () => {
         document.body.style.overflow = previousOverflow;
-        onComplete();
       },
     });
 
-    tl.to(counter, {
+    tl.to(state, {
       value: 100,
-      duration: 1.7,
+      duration: 1.3,
       ease: "power2.inOut",
       onUpdate: () => {
-        if (counterRef.current) {
-          counterRef.current.textContent = String(Math.round(counter.value));
-        }
-        if (barRef.current) {
-          barRef.current.style.transform = `scaleX(${counter.value / 100})`;
+        const pct = state.value;
+        if (barRef.current) barRef.current.style.transform = `scaleX(${pct / 100})`;
+        if (stepRef.current) {
+          const idx = Math.min(STEPS.length - 1, Math.floor((pct / 100) * STEPS.length));
+          stepRef.current.textContent = STEPS[idx];
         }
       },
     })
-      .to(overlayRef.current, { opacity: 0, duration: 0.55, ease: "power2.out" }, "+=0.2")
-      .set(overlayRef.current, { visibility: "hidden" });
+      .to(overlayRef.current, { opacity: 0, duration: 0.45, ease: "power2.out" }, "+=0.15")
+      .set(overlayRef.current, { visibility: "hidden", pointerEvents: "none" });
 
     return () => {
       document.body.style.overflow = previousOverflow;
       tl.kill();
     };
-  }, [reducedMotion, onComplete]);
+  }, [reducedMotion]);
 
   if (reducedMotion) return null;
 
@@ -58,18 +53,17 @@ export function Preloader({ onComplete }: Props) {
       className="fixed inset-0 z-[100] bg-bg flex flex-col items-center justify-center"
       aria-hidden="true"
     >
-      <span
-        ref={counterRef}
-        className="font-mono text-6xl md:text-8xl text-fg tabular-nums tracking-tight"
-      >
-        0
-      </span>
-      <div className="mt-7 w-40 h-px bg-border relative overflow-hidden">
-        <div
-          ref={barRef}
-          className="absolute inset-0 bg-accent origin-left"
-          style={{ transform: "scaleX(0)" }}
-        />
+      <div className="w-56">
+        <p ref={stepRef} className="font-mono text-xs text-fg-muted mb-3">
+          opening session
+        </p>
+        <div className="h-px bg-line relative overflow-hidden">
+          <div
+            ref={barRef}
+            className="absolute inset-0 bg-accent origin-left"
+            style={{ transform: "scaleX(0)" }}
+          />
+        </div>
       </div>
     </div>
   );
